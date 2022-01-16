@@ -3,6 +3,9 @@ const app = express();
 const bodyParser = require("body-parser");
 const connection = require("./database/database");
 
+const categoriesController = require("./controllers/categories");
+const articlesController = require("./controllers/articles");
+
 // Database
 async function connectDatabase (){
     try{
@@ -16,13 +19,14 @@ connectDatabase();
 
 // Modo para o Express usar o EJS como view engine
 app.set('view engine', 'ejs');
-app.use(express.static('public'));
+app.use(express.static('public'));//static
 
 // Body Parser - formulários e json
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-
+app.use("/", categoriesController);
+app.use("/", articlesController);
 
 app.get("/", (req, res) => {
     res.render("index");
