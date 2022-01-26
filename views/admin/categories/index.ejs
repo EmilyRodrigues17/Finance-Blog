@@ -28,7 +28,7 @@
                     <th><%= category.title %></th>
                     <th><%= category.slug %></th>
                     <th>
-                        <button style="background-color: #f1c972;" class="btn btn-warning">Editar</button>
+                        <a href="/admin/categories/edit/<%= category.id %>" style="background-color: #f1c972;" class="btn btn-warning">Editar</a>
 
                         <form method="POST" action="/categories/delete" style="display: inline" onsubmit="confirmeDelete(event, this)">
                             <input type="hidden" name="id" value="<%= category.id %>">
