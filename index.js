@@ -6,6 +6,9 @@ const connection = require("./database/database");
 const categoriesController = require("./controllers/categories");
 const articlesController = require("./controllers/articles");
 
+const article = require("./database/models/article");
+const category = require("./database/models/category")
+
 // Database
 async function connectDatabase (){
     try{
