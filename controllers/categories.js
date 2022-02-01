@@ -30,33 +30,36 @@ router.post("/categories/save", async (req, res) => {
     }
 });
 
-router.get("/admin/categories/edit/:id", (req, res) => {
+router.get("/admin/categories/edit/:id", async (req, res) => {
     const id = req.params.id;
-    if (isNaN(id)){
-        res.redirect("/admin/categories");
-    }
-    Category.findByPk(id).then(category => {
-        if (category != undefined){
-            res.render("admin/categories/edit", {category: category});
-        }else{
+    if (!isNaN(id)){
+        try{
+            const category = await Category.findByPk(id);
+
+            if (category != undefined){
+                res.render("admin/categories/edit", {category: category});
+            }else{
+                res.redirect("/admin/categories");
+            }
+        }catch(erro){            
             res.redirect("/admin/categories");
         }
-    }).catch(erro => {
+    }else{
         res.redirect("/admin/categories");
-    })
+    }
 });
 
-router.post("/categories/update", (req, res) => {
+router.post("/categories/update", async (req, res) => {
     const id = req.body.id;
     const title = req.body.title;
 
-    Category.update({title: title, slug: slugify(title)}, {
-        where:{
-            id:id
-        }
-    }).then(() => {
+    try{
+        await Category.update({title: title, slug: slugify(title)}, 
+        {where:{id:id}})
         res.redirect("/admin/categories");
-    })
+    }catch(erro){
+        console.log("erro update:", erro)
+    }
 });
 
 router.post("/categories/delete", async (req, res) => {
